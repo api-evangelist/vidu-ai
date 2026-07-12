@@ -1,0 +1,91 @@
+aid: vidu-ai
+name: Vidu
+review:
+  question: Does Vidu expose a documented public WebSocket API?
+  answer: false
+  date: '2026-07-11'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No AsyncAPI document was authored. Vidu's public API is an asynchronous
+    but request/response REST service over HTTPS: a generation task is created
+    with a POST, and results are retrieved either by the client polling
+    GET /ent/v2/tasks/{id}/creations or by Vidu POSTing to a caller-supplied
+    callback_url when the task changes state. Neither transport is a server-push
+    stream (WebSocket or SSE) on Vidu's own API, so there is no push channel to
+    model. The callback is an outbound webhook (Vidu -> caller HTTP endpoint),
+    which is out of scope for a Vidu-hosted AsyncAPI document.
+findings:
+  summary: |
+    Vidu does not publish a documented public WebSocket API. Vidu is a
+    generative video AI platform from Shengshu Technology (ShengShu / 生数科技)
+    built on a U-ViT diffusion-transformer architecture. Its public API is a
+    REST, create-then-poll service under https://api.vidu.com/ent/v2,
+    authenticated with an API key sent as "Authorization: Token vda_xxx".
+    Each generation operation (text2video, img2video, reference2video,
+    start-end2video, upscale) is a POST that returns a task_id in a "created"
+    state; the finished video is obtained by polling
+    GET /ent/v2/tasks/{id}/creations for state = success, or by supplying an
+    optional callback_url that Vidu calls when the task completes. No realtime,
+    bidirectional, or streaming WebSocket (ws:// or wss://) endpoint is
+    documented anywhere in the Vidu platform docs as of the review date.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://api.vidu.com/ent/v2
+      documented: true
+      note: All generation and task endpoints are request/response HTTPS REST.
+    - protocol: Polling
+      scheme: https
+      documented: true
+      note: Client-initiated polling of GET /ent/v2/tasks/{id}/creations for task status. Not server push.
+    - protocol: Webhook
+      scheme: https
+      documented: true
+      note: Optional callback_url is called by Vidu when a task changes state. Outbound HTTP, not WebSocket.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented in the Vidu API reference or any product page as of the review date.
+  endpointsConfirmedRest:
+    - POST https://api.vidu.com/ent/v2/text2video
+    - POST https://api.vidu.com/ent/v2/img2video
+    - POST https://api.vidu.com/ent/v2/reference2video
+    - POST https://api.vidu.com/ent/v2/start-end2video
+    - POST https://api.vidu.com/ent/v2/upscale
+    - GET  https://api.vidu.com/ent/v2/tasks/{id}/creations
+  accessModel: |
+    The Vidu API is fully open - individual developers and businesses can buy
+    prepaid credits and start calling the API with no application required and
+    no high-tier subscription. Endpoint paths, HTTP methods, base URL, model
+    names, and the token auth scheme are grounded in the public Vidu platform
+    docs. The OpenAPI in this repo models request/response field schemas from
+    those documentation descriptions (marked x-modeled) and should be reconciled
+    against the live reference before production use.
+sources:
+  - url: https://platform.vidu.com/docs/text-to-video
+    type: Documentation
+    note: Text-to-video endpoint POST /ent/v2/text2video; models, params, async task response.
+  - url: https://platform.vidu.com/docs/image-to-video
+    type: Documentation
+    note: Image-to-video endpoint POST /ent/v2/img2video.
+  - url: https://platform.vidu.com/docs/reference-to-video
+    type: Documentation
+    note: Reference-to-video POST /ent/v2/reference2video; 1-7 reference images, multi-entity consistency.
+  - url: https://platform.vidu.com/docs/start-end-to-video
+    type: Documentation
+    note: Start-end frame POST /ent/v2/start-end2video.
+  - url: https://docs.platform.vidu.com/7207545m0
+    type: APIReference
+    note: API Call Method - token auth (Authorization Token), async task pattern, get creation / status query.
+  - url: https://www.prnewswire.com/news-releases/shengshu-technology-lays-foundation-for-scalable-ai-video-generation-with-launch-of-vidu-api-offering-instant-access-and-industry-leading-speed-for-enterprises--developers-302375882.html
+    type: PressRelease
+    note: Shengshu Technology launch of the Vidu API; open access, credit pricing ($0.05/credit, from $10), U-ViT, multi-entity consistency.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket protocol surface exists. Vidu's own public API is asynchronous
+    request/response REST (POST to create a task, GET to poll) plus an optional
+    outbound callback webhook. No AsyncAPI document was created because there is
+    no server-push transport on Vidu's own API to model.

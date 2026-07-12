@@ -1,0 +1,93 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Vidu API",
+    "version": "2.0",
+    "description": "Generative video AI from Shengshu Technology. Create-then-poll: submit a generation task, then poll /tasks/{id}/creations for the finished video. Auth is 'Authorization: Token vda_xxx'."
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "apikey": {
+        "in": "header",
+        "key": "Authorization",
+        "value": "Token {{viduApiKey}}"
+      }
+    },
+    "baseUrl": "https://api.vidu.com/ent/v2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Generation",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": { "name": "Create text-to-video task.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.vidu.com/ent/v2/text2video",
+            "body": { "type": "json", "data": "{\n  \"model\": \"viduq3-turbo\",\n  \"prompt\": \"a red fox running through a snowy forest at dawn\",\n  \"duration\": 5,\n  \"resolution\": \"720p\",\n  \"aspect_ratio\": \"16:9\"\n}" }
+          },
+          "docs": "Generate a video from a text prompt. Returns an async task_id to poll."
+        },
+        {
+          "info": { "name": "Create image-to-video task.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.vidu.com/ent/v2/img2video",
+            "body": { "type": "json", "data": "{\n  \"model\": \"viduq3-pro\",\n  \"images\": [\"https://example.com/frame.png\"],\n  \"prompt\": \"gentle camera push-in\",\n  \"duration\": 5,\n  \"resolution\": \"720p\"\n}" }
+          },
+          "docs": "Animate one still image into a video. Returns an async task_id to poll."
+        },
+        {
+          "info": { "name": "Create reference-to-video task.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.vidu.com/ent/v2/reference2video",
+            "body": { "type": "json", "data": "{\n  \"model\": \"viduq2\",\n  \"images\": [\"https://example.com/subject1.png\", \"https://example.com/subject2.png\"],\n  \"prompt\": \"the two characters shaking hands in an office\",\n  \"aspect_ratio\": \"16:9\",\n  \"resolution\": \"720p\"\n}" }
+          },
+          "docs": "Keep 1-7 supplied subjects consistent across the generated clip (multi-entity consistency)."
+        },
+        {
+          "info": { "name": "Create start-end frame task.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.vidu.com/ent/v2/start-end2video",
+            "body": { "type": "json", "data": "{\n  \"model\": \"vidu2.0\",\n  \"images\": [\"https://example.com/start.png\", \"https://example.com/end.png\"],\n  \"prompt\": \"smooth morph between the two frames\",\n  \"duration\": 4,\n  \"resolution\": \"720p\"\n}" }
+          },
+          "docs": "Interpolate motion between a start frame and an end frame. Returns an async task_id to poll."
+        },
+        {
+          "info": { "name": "Create upscale task (Upscale Pro).", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.vidu.com/ent/v2/upscale",
+            "body": { "type": "json", "data": "{\n  \"model\": \"upscaler\",\n  \"creation_id\": \"<creation_id>\",\n  \"resolution\": \"1080p\"\n}" }
+          },
+          "docs": "Upscale a prior Vidu creation to a higher resolution. Body modeled from public docs; reconcile on integration."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Tasks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": { "name": "Get task status and creations.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.vidu.com/ent/v2/tasks/:id/creations",
+            "params": [
+              { "name": "id", "value": "", "type": "path", "description": "The task_id returned when the task was created." }
+            ]
+          },
+          "docs": "Poll a generation task. When state = success, the creations array holds the finished video url and cover_url."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Vidu
+providerId: vidu-ai
+created: '2026-07-11'
+modified: '2026-07-11'
+reconciled: false
+tags:
+- Video Generation
+- AI Video
+- Generative AI
+- Plans
+- Credits
+description: >-
+  The Vidu API uses a prepaid, credit-based pay-as-you-go model rather than
+  named subscription tiers. Access is fully open - individual developers and
+  businesses can buy API credits with no application and no high-tier
+  subscription required. At launch, base pricing was published at USD $0.05 per
+  credit with a minimum purchase around $10, and a four-second clip costing
+  roughly 4 to 40 credits depending on the feature type, model, resolution, and
+  aspect ratio. Off-peak processing lowers cost in exchange for a longer
+  (up to 48 hour) processing window. An enterprise engagement with a dedicated
+  B2B service team is available for businesses integrating at scale.
+notes: >-
+  Per-feature and per-model credit costs vary and change over time; verify the
+  current credit table and per-credit price on the Vidu platform pricing page
+  during reconciliation. Values here reflect the public API launch announcement.
+sources:
+- https://platform.vidu.com/
+- https://www.prnewswire.com/news-releases/shengshu-technology-lays-foundation-for-scalable-ai-video-generation-with-launch-of-vidu-api-offering-instant-access-and-industry-leading-speed-for-enterprises--developers-302375882.html
+plans:
+- id: vidu-credits
+  name: Pay-as-you-go Credits
+  type: usage
+  description: >-
+    Prepaid credits consumed per generation task. Open to any developer with no
+    application required; buy credits and call any generation endpoint.
+  entries:
+  - label: API Credit
+    name: credit
+    type: usage
+    metric: credits
+    limit: -1
+    timeFrame: usage
+    geo: global
+    unit: 1
+    price: $0.05 per credit (launch base price)
+    userMultiplied: false
+  - label: Minimum Purchase
+    name: minimum_purchase
+    type: flat
+    metric: currency
+    limit: -1
+    timeFrame: usage
+    geo: global
+    unit: 1
+    price: from $10 (instant purchase, no subscription)
+    userMultiplied: false
+  - label: Four-Second Clip
+    name: clip_4s
+    type: usage
+    metric: credits
+    limit: -1
+    timeFrame: usage
+    geo: global
+    unit: 1
+    price: ~4-40 credits depending on feature, model, resolution, and aspect ratio
+    userMultiplied: false
+  - label: Off-Peak Processing
+    name: off_peak
+    type: usage
+    metric: credits
+    limit: -1
+    timeFrame: usage
+    geo: global
+    unit: 1
+    price: reduced credit cost, up to 48h processing window
+    userMultiplied: false
+  elements:
+  - name: Text-to-Video
+  - name: Image-to-Video
+  - name: Reference-to-Video
+  - name: Start-End Frame
+  - name: Upscale
+- id: vidu-enterprise
+  name: Enterprise
+  type: enterprise
+  description: >-
+    Business engagement with a dedicated B2B service team for hands-on support
+    integrating Vidu into production workflows. Volume and terms negotiated.
+  entries:
+  - label: Enterprise Engagement
+    name: enterprise
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: contact Vidu / Shengshu sales
+    userMultiplied: false
+  elements:
+  - name: Dedicated B2B Support
+  - name: Volume Credit Pricing
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

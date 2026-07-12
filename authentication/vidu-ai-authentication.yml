@@ -1,0 +1,24 @@
+generated: '2026-07-11'
+method: documented
+source: https://docs.platform.vidu.com/7207545m0
+summary:
+  types:
+  - apiKey
+schemes:
+- name: vidu_token
+  type: apiKey
+  in: header
+  headerName: Authorization
+  format: Token {api_key}
+  keyPrefix: vda_
+  note: >-
+    Vidu authenticates every request with an API key sent in the Authorization
+    header using the "Token" scheme (Authorization: Token vda_xxx), not standard
+    HTTP Bearer. Keys are created in the Vidu platform account and are prepaid
+    against a credit balance.
+  sources:
+  - https://docs.platform.vidu.com/7207545m0
+  - https://platform.vidu.com/docs/text-to-video
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

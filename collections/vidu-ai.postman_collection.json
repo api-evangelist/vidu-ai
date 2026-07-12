@@ -1,0 +1,83 @@
+{
+  "info": {
+    "name": "Vidu API",
+    "description": "Generative video AI from Shengshu Technology. Create-then-poll: submit a generation task, then poll /tasks/{id}/creations for the finished video. Auth is 'Authorization: Token vda_xxx'. Endpoint paths and auth are grounded in public Vidu docs; request bodies are modeled examples.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      { "key": "in", "value": "header" },
+      { "key": "key", "value": "Authorization" },
+      { "key": "value", "value": "Token {{viduApiKey}}" }
+    ]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://api.vidu.com/ent/v2" }
+  ],
+  "item": [
+    {
+      "name": "Generation",
+      "item": [
+        {
+          "name": "Create text-to-video task.",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrl}}/text2video", "host": [ "{{baseUrl}}" ], "path": [ "text2video" ] },
+            "body": { "mode": "raw", "raw": "{\n  \"model\": \"viduq3-turbo\",\n  \"prompt\": \"a red fox running through a snowy forest at dawn\",\n  \"duration\": 5,\n  \"resolution\": \"720p\",\n  \"aspect_ratio\": \"16:9\"\n}", "options": { "raw": { "language": "json" } } }
+          }
+        },
+        {
+          "name": "Create image-to-video task.",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrl}}/img2video", "host": [ "{{baseUrl}}" ], "path": [ "img2video" ] },
+            "body": { "mode": "raw", "raw": "{\n  \"model\": \"viduq3-pro\",\n  \"images\": [\"https://example.com/frame.png\"],\n  \"prompt\": \"gentle camera push-in\",\n  \"duration\": 5,\n  \"resolution\": \"720p\"\n}", "options": { "raw": { "language": "json" } } }
+          }
+        },
+        {
+          "name": "Create reference-to-video task.",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrl}}/reference2video", "host": [ "{{baseUrl}}" ], "path": [ "reference2video" ] },
+            "body": { "mode": "raw", "raw": "{\n  \"model\": \"viduq2\",\n  \"images\": [\"https://example.com/subject1.png\", \"https://example.com/subject2.png\"],\n  \"prompt\": \"the two characters shaking hands in an office\",\n  \"aspect_ratio\": \"16:9\",\n  \"resolution\": \"720p\"\n}", "options": { "raw": { "language": "json" } } }
+          }
+        },
+        {
+          "name": "Create start-end frame task.",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrl}}/start-end2video", "host": [ "{{baseUrl}}" ], "path": [ "start-end2video" ] },
+            "body": { "mode": "raw", "raw": "{\n  \"model\": \"vidu2.0\",\n  \"images\": [\"https://example.com/start.png\", \"https://example.com/end.png\"],\n  \"prompt\": \"smooth morph between the two frames\",\n  \"duration\": 4,\n  \"resolution\": \"720p\"\n}", "options": { "raw": { "language": "json" } } }
+          }
+        },
+        {
+          "name": "Create upscale task (Upscale Pro).",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrl}}/upscale", "host": [ "{{baseUrl}}" ], "path": [ "upscale" ] },
+            "body": { "mode": "raw", "raw": "{\n  \"model\": \"upscaler\",\n  \"creation_id\": \"<creation_id>\",\n  \"resolution\": \"1080p\"\n}", "options": { "raw": { "language": "json" } } }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tasks",
+      "item": [
+        {
+          "name": "Get task status and creations.",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/tasks/:id/creations", "host": [ "{{baseUrl}}" ], "path": [ "tasks", ":id", "creations" ], "variable": [ { "key": "id", "value": "", "description": "The task_id returned when the task was created." } ] }
+          }
+        }
+      ]
+    }
+  ]
+}

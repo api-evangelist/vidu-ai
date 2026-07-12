@@ -1,0 +1,58 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Vidu
+providerId: vidu-ai
+created: '2026-07-11'
+modified: '2026-07-11'
+reconciled: false
+tags:
+- Video Generation
+- AI Video
+- Rate Limiting
+- Concurrency
+- Quotas
+description: >-
+  Vidu's API is an asynchronous, queue-based generation service. Throughput is
+  governed less by classic requests-per-minute limits and more by the number of
+  concurrent generation tasks an account may have in flight and by the account's
+  prepaid credit balance, which caps total generation. Specific concurrency
+  caps and any per-minute submission limits are set per account and are not
+  published as fixed public numbers; they should be confirmed with Vidu on
+  reconciliation. Off-peak mode intentionally trades a longer queue window for
+  lower cost.
+notes: >-
+  Confirm concurrent-task ceilings, submission rate limits, and any 429 / rate
+  error codes against the Vidu error-code reference and account settings during
+  reconciliation.
+sources:
+- https://docs.platform.vidu.com/7207545m0
+- https://docs.platform.vidu.com/7208256m0
+responseCodes:
+  throttled: 429
+limits:
+- name: Concurrent Generation Tasks
+  scope: account
+  metric: tasks
+  limit: see provider documentation
+  notes: Number of in-flight generation tasks allowed per account; varies by account.
+- name: Credit Balance
+  scope: account
+  metric: credits
+  limit: prepaid balance
+  notes: Total generation is bounded by the account's purchased credit balance.
+- name: Submission Rate
+  scope: account
+  metric: requests
+  limit: see provider documentation
+  notes: Any per-minute task-submission ceiling is account-specific and not published as a fixed number.
+policies:
+- name: Asynchronous Queue
+  description: Tasks are queued and processed asynchronously; poll /tasks/{id}/creations or use a callback_url rather than blocking.
+- name: Off-Peak Window
+  description: Off-peak mode accepts a longer (up to 48h) processing window in exchange for reduced credit cost.
+- name: Backoff Strategy
+  description: Clients should poll with a sensible interval and exponential backoff, and handle 429 with retry.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
