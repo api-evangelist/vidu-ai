@@ -184,6 +184,8 @@ apis:
     and upscale task. Task listing and cancel-generation operations are part of
     the same task-management surface.
 common:
+- type: AgenticAccess
+  url: agentic-access/vidu-ai-agentic-access.yml
 - type: Authentication
   url: authentication/vidu-ai-authentication.yml
 - type: GitHubOrganization
