@@ -1,0 +1,82 @@
+openapi: 3.0.3
+info:
+  title: Vidu Generation Tasks API
+  description: 'Generative video AI API from Shengshu Technology. The Vidu API is a REST, create-then-poll service: each generation operation (text-to-video, image-to-video, reference-to-video, start-and-end frame, upscale) submits an asynchronous task and returns a task_id in a "created" state, which the caller then polls via GET /ent/v2/tasks/{id}/creations (or receives on a callback_url) for the finished video URL. Endpoint paths and the token authentication scheme are grounded in the public Vidu platform docs (platform.vidu.com / docs.platform.vidu.com). Request and response schemas below are modeled from those docs and should be reconciled against the live reference before production use.'
+  version: '2.0'
+  contact:
+    name: Vidu Platform
+    url: https://platform.vidu.com/docs
+  x-modeled: true
+  x-modeled-note: 'Endpoint paths, HTTP methods, base URL, model names, and the "Authorization: Token" auth scheme are confirmed from public Vidu docs. Property-level request/response fields are modeled from documentation descriptions, not machine-generated from an official OpenAPI, so field types and enums should be verified on integration.'
+servers:
+- url: https://api.vidu.com/ent/v2
+  description: Vidu enterprise generation API (v2)
+security:
+- viduToken: []
+tags:
+- name: Tasks
+  description: Poll, list, and cancel generation tasks.
+paths:
+  /tasks/{id}/creations:
+    get:
+      operationId: getTaskCreations
+      tags:
+      - Tasks
+      summary: Get the status and results of a generation task.
+      description: Poll the status of an asynchronous generation task. When state is "success", the creations array carries the finished video URL(s) and cover image(s).
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The task_id returned when the generation task was created.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Task status and any finished creations.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskStatus'
+components:
+  schemas:
+    TaskStatus:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The task_id.
+        state:
+          type: string
+          enum:
+          - created
+          - queueing
+          - processing
+          - success
+          - failed
+        err_code:
+          type: string
+          nullable: true
+        credits:
+          type: integer
+        creations:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              url:
+                type: string
+                format: uri
+                description: URL of the finished video.
+              cover_url:
+                type: string
+                format: uri
+                description: URL of the poster/cover image.
+  securitySchemes:
+    viduToken:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'API key sent as "Authorization: Token {api_key}" (keys are prefixed vda_). This is a token scheme, not standard HTTP Bearer.'
