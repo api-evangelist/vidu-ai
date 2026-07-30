@@ -13,7 +13,20 @@ description: >-
   status endpoint (or receive a callback) for the finished video URL. Access is
   open to individual developers and businesses on a prepaid, credit-based model
   with no application required.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: paid
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Paid · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/vidu-ai.png
 tags:
 - Video Generation
 - AI Video
@@ -27,162 +40,66 @@ created: '2026-07-11'
 modified: '2026-07-11'
 specificationVersion: '0.19'
 apis:
-- aid: vidu-ai:vidu-ai-text-to-video-api
-  name: Vidu Text-to-Video API
-  tags:
-  - Text-to-Video
-  - Video Generation
-  - Generative AI
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+- aid: vidu-ai:vidu-ai-generation-api
+  name: Vidu Generation API
+  description: Create asynchronous video-generation tasks.
   humanURL: https://platform.vidu.com/docs/text-to-video
   baseURL: https://api.vidu.com/ent/v2
-  properties:
-  - url: https://platform.vidu.com/docs/text-to-video
-    type: Documentation
-  - url: https://docs.platform.vidu.com/7207545m0
-    type: APIReference
-  - url: openapi/vidu-ai-openapi.yml
-    type: OpenAPI
-  - url: collections/vidu-ai.postman_collection.json
-    type: PostmanCollection
-  - url: collections/vidu-ai.opencollection.json
-    type: OpenCollection
-  description: >-
-    Create a video from a text prompt alone. POST to /ent/v2/text2video with a
-    model (viduq3-turbo, viduq3-pro, viduq2, viduq1), prompt, duration,
-    resolution, and aspect ratio; the call returns a task_id in a created state.
-    Poll the task creations endpoint (or supply a callback_url) to retrieve the
-    finished video. Supports style, seed, movement amplitude, background music,
-    audio-visual sync on q3, and off-peak processing.
-- aid: vidu-ai:vidu-ai-image-to-video-api
-  name: Vidu Image-to-Video API
   tags:
-  - Image-to-Video
-  - Video Generation
-  - Animation
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://platform.vidu.com/docs/image-to-video
-  baseURL: https://api.vidu.com/ent/v2
+  - Generation
   properties:
-  - url: https://platform.vidu.com/docs/image-to-video
-    type: Documentation
-  - url: https://docs.platform.vidu.com/7207545m0
-    type: APIReference
-  - url: openapi/vidu-ai-openapi.yml
-    type: OpenAPI
-  - url: collections/vidu-ai.postman_collection.json
-    type: PostmanCollection
-  - url: collections/vidu-ai.opencollection.json
-    type: OpenCollection
-  description: >-
-    Animate a single still image into a video clip. POST to /ent/v2/img2video
-    with a model, one input image (URL or Base64; PNG/JPEG/JPG/WebP up to 50MB),
-    an optional prompt, duration, and resolution. Returns an asynchronous
-    task_id to poll for the generated video. Supports audio, background music,
-    seed, movement amplitude, and off-peak mode.
-- aid: vidu-ai:vidu-ai-reference-to-video-api
-  name: Vidu Reference-to-Video API
+  - type: OpenAPI
+    url: openapi/vidu-ai-generation-api-openapi.yml
+  - type: Documentation
+    url: https://platform.vidu.com/docs/text-to-video
+  - type: APIReference
+    url: https://docs.platform.vidu.com/7207545m0
+  - type: PostmanCollection
+    url: collections/vidu-ai.postman_collection.json
+  - type: OpenCollection
+    url: collections/vidu-ai.opencollection.json
+  - type: Documentation
+    url: https://platform.vidu.com/docs/image-to-video
+  - type: Documentation
+    url: https://platform.vidu.com/docs/reference-to-video
+  - type: APIReference
+    url: https://docs.platform.vidu.com/334378351e0
+  - type: Documentation
+    url: https://platform.vidu.com/docs/start-end-to-video
+  - type: APIReference
+    url: https://docs.platform.vidu.com/334381323e0
+  - type: Documentation
+    url: https://docs.platform.vidu.com/7207545m0
+- aid: vidu-ai:vidu-ai-tasks-api
+  name: Vidu Tasks API
+  description: Poll, list, and cancel generation tasks.
+  humanURL: https://platform.vidu.com/docs/text-to-video
+  baseURL: https://api.vidu.com/ent/v2
   tags:
-  - Reference-to-Video
-  - Character Consistency
-  - Multi-Entity
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://platform.vidu.com/docs/reference-to-video
-  baseURL: https://api.vidu.com/ent/v2
+  - Tasks
   properties:
-  - url: https://platform.vidu.com/docs/reference-to-video
-    type: Documentation
-  - url: https://docs.platform.vidu.com/334378351e0
-    type: APIReference
-  - url: openapi/vidu-ai-openapi.yml
-    type: OpenAPI
-  - url: collections/vidu-ai.postman_collection.json
-    type: PostmanCollection
-  - url: collections/vidu-ai.opencollection.json
-    type: OpenCollection
-  description: >-
-    Generate video that keeps supplied subjects visually consistent across the
-    clip - Vidu's multi-entity consistency feature. POST to
-    /ent/v2/reference2video with one to seven reference images plus a prompt,
-    and the model composites those characters or objects into a new scene.
-    Returns an asynchronous task_id to poll. Supports aspect ratio, resolution,
-    background music, seed, movement amplitude, and off-peak mode.
-- aid: vidu-ai:vidu-ai-start-end-frame-api
-  name: Vidu Start-End Frame API
-  tags:
-  - Start-End Frame
-  - Interpolation
-  - Video Generation
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://platform.vidu.com/docs/start-end-to-video
-  baseURL: https://api.vidu.com/ent/v2
-  properties:
-  - url: https://platform.vidu.com/docs/start-end-to-video
-    type: Documentation
-  - url: https://docs.platform.vidu.com/334381323e0
-    type: APIReference
-  - url: openapi/vidu-ai-openapi.yml
-    type: OpenAPI
-  - url: collections/vidu-ai.postman_collection.json
-    type: PostmanCollection
-  - url: collections/vidu-ai.opencollection.json
-    type: OpenCollection
-  description: >-
-    Generate a video that transitions between a supplied first frame and last
-    frame. POST to /ent/v2/start-end2video with two images (start and end) and
-    an optional prompt; the model interpolates the motion between them. Returns
-    an asynchronous task_id to poll. Supports duration, resolution, seed,
-    movement amplitude, and off-peak mode.
-- aid: vidu-ai:vidu-ai-upscale-api
-  name: Vidu Upscale API
-  tags:
-  - Upscale
-  - Super Resolution
-  - Video Enhancement
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://docs.platform.vidu.com/7207545m0
-  baseURL: https://api.vidu.com/ent/v2
-  properties:
-  - url: https://docs.platform.vidu.com/7207545m0
-    type: Documentation
-  - url: openapi/vidu-ai-openapi.yml
-    type: OpenAPI
-  - url: collections/vidu-ai.postman_collection.json
-    type: PostmanCollection
-  - url: collections/vidu-ai.opencollection.json
-    type: OpenCollection
-  description: >-
-    Upscale a previously generated Vidu video to a higher resolution (Upscale
-    Pro). POST to /ent/v2/upscale referencing a prior creation or video asset;
-    returns an asynchronous task_id to poll for the enhanced output. Request and
-    response bodies here are modeled from the public Upscale Pro documentation
-    and should be reconciled against the live reference on integration.
-- aid: vidu-ai:vidu-ai-task-query-api
-  name: Vidu Task Query API
-  tags:
-  - Task Status
-  - Polling
-  - Async
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://docs.platform.vidu.com/7207545m0
-  baseURL: https://api.vidu.com/ent/v2
-  properties:
-  - url: https://docs.platform.vidu.com/7207545m0
-    type: Documentation
-  - url: openapi/vidu-ai-openapi.yml
-    type: OpenAPI
-  - url: collections/vidu-ai.postman_collection.json
-    type: PostmanCollection
-  - url: collections/vidu-ai.opencollection.json
-    type: OpenCollection
-  description: >-
-    Retrieve the status and results of an asynchronous generation task. GET
-    /ent/v2/tasks/{id}/creations returns the task id, state
-    (created, queueing, processing, success, failed), credits used, and a
-    creations array of finished video URLs and cover images. This is the poll
-    surface for every text2video, img2video, reference2video, start-end2video,
-    and upscale task. Task listing and cancel-generation operations are part of
-    the same task-management surface.
+  - type: OpenAPI
+    url: openapi/vidu-ai-tasks-api-openapi.yml
+  - type: Documentation
+    url: https://platform.vidu.com/docs/text-to-video
+  - type: APIReference
+    url: https://docs.platform.vidu.com/7207545m0
+  - type: PostmanCollection
+    url: collections/vidu-ai.postman_collection.json
+  - type: OpenCollection
+    url: collections/vidu-ai.opencollection.json
+  - type: Documentation
+    url: https://platform.vidu.com/docs/image-to-video
+  - type: Documentation
+    url: https://platform.vidu.com/docs/reference-to-video
+  - type: APIReference
+    url: https://docs.platform.vidu.com/334378351e0
+  - type: Documentation
+    url: https://platform.vidu.com/docs/start-end-to-video
+  - type: APIReference
+    url: https://docs.platform.vidu.com/334381323e0
+  - type: Documentation
+    url: https://docs.platform.vidu.com/7207545m0
 common:
 - type: AgenticAccess
   url: agentic-access/vidu-ai-agentic-access.yml
