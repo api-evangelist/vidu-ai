@@ -1,0 +1,16 @@
+{
+  "provider": "vidu-ai",
+  "sources": [
+    "vidu-ai-generation-api-openapi.yml",
+    "vidu-ai-tasks-api-openapi.yml"
+  ],
+  "outputs": [
+    "vidu-ai-generation-api-openapi.yml",
+    "vidu-ai-tasks-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

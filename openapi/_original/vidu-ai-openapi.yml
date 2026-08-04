@@ -1,0 +1,371 @@
+openapi: 3.0.3
+info:
+  title: Vidu API
+  description: >-
+    Generative video AI API from Shengshu Technology. The Vidu API is a REST,
+    create-then-poll service: each generation operation (text-to-video,
+    image-to-video, reference-to-video, start-and-end frame, upscale) submits an
+    asynchronous task and returns a task_id in a "created" state, which the
+    caller then polls via GET /ent/v2/tasks/{id}/creations (or receives on a
+    callback_url) for the finished video URL. Endpoint paths and the token
+    authentication scheme are grounded in the public Vidu platform docs
+    (platform.vidu.com / docs.platform.vidu.com). Request and response schemas
+    below are modeled from those docs and should be reconciled against the live
+    reference before production use.
+  version: '2.0'
+  contact:
+    name: Vidu Platform
+    url: https://platform.vidu.com/docs
+  x-modeled: true
+  x-modeled-note: >-
+    Endpoint paths, HTTP methods, base URL, model names, and the
+    "Authorization: Token" auth scheme are confirmed from public Vidu docs.
+    Property-level request/response fields are modeled from documentation
+    descriptions, not machine-generated from an official OpenAPI, so field
+    types and enums should be verified on integration.
+servers:
+- url: https://api.vidu.com/ent/v2
+  description: Vidu enterprise generation API (v2)
+security:
+- viduToken: []
+tags:
+- name: Generation
+  description: Create asynchronous video-generation tasks.
+- name: Tasks
+  description: Poll, list, and cancel generation tasks.
+paths:
+  /text2video:
+    post:
+      operationId: createText2Video
+      tags:
+      - Generation
+      summary: Create a text-to-video generation task.
+      description: >-
+        Generate a video from a text prompt. Returns an asynchronous task
+        that must be polled at /tasks/{id}/creations for the finished video.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Text2VideoRequest'
+      responses:
+        '200':
+          description: Task created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskCreated'
+  /img2video:
+    post:
+      operationId: createImg2Video
+      tags:
+      - Generation
+      summary: Create an image-to-video generation task.
+      description: >-
+        Animate a single still image into a video clip. Returns an
+        asynchronous task to poll for the finished video.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Img2VideoRequest'
+      responses:
+        '200':
+          description: Task created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskCreated'
+  /reference2video:
+    post:
+      operationId: createReference2Video
+      tags:
+      - Generation
+      summary: Create a reference-to-video generation task.
+      description: >-
+        Generate video that keeps one to seven supplied reference subjects
+        visually consistent across the clip (multi-entity consistency).
+        Returns an asynchronous task to poll.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Reference2VideoRequest'
+      responses:
+        '200':
+          description: Task created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskCreated'
+  /start-end2video:
+    post:
+      operationId: createStartEnd2Video
+      tags:
+      - Generation
+      summary: Create a start-and-end frame generation task.
+      description: >-
+        Generate a video that interpolates motion between a supplied first
+        frame and last frame. Returns an asynchronous task to poll.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StartEnd2VideoRequest'
+      responses:
+        '200':
+          description: Task created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskCreated'
+  /upscale:
+    post:
+      operationId: createUpscale
+      tags:
+      - Generation
+      summary: Create a video upscale task (Upscale Pro).
+      description: >-
+        Upscale a previously generated Vidu video to a higher resolution.
+        Returns an asynchronous task to poll. Request body is modeled from the
+        public Upscale Pro docs and should be reconciled on integration.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpscaleRequest'
+      responses:
+        '200':
+          description: Task created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskCreated'
+  /tasks/{id}/creations:
+    get:
+      operationId: getTaskCreations
+      tags:
+      - Tasks
+      summary: Get the status and results of a generation task.
+      description: >-
+        Poll the status of an asynchronous generation task. When state is
+        "success", the creations array carries the finished video URL(s) and
+        cover image(s).
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The task_id returned when the generation task was created.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Task status and any finished creations.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskStatus'
+components:
+  securitySchemes:
+    viduToken:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: >-
+        API key sent as "Authorization: Token {api_key}" (keys are prefixed
+        vda_). This is a token scheme, not standard HTTP Bearer.
+  schemas:
+    CommonGenerationParams:
+      type: object
+      properties:
+        model:
+          type: string
+          description: Generation model, e.g. viduq3-turbo, viduq3-pro, viduq2, viduq1, vidu2.0.
+          example: viduq3-turbo
+        prompt:
+          type: string
+          maxLength: 5000
+          description: Text description of the desired video.
+        duration:
+          type: integer
+          description: Clip length in seconds. Allowed range depends on model (q3 up to 16s).
+          example: 5
+        resolution:
+          type: string
+          description: Output resolution.
+          enum:
+          - 540p
+          - 720p
+          - 1080p
+        aspect_ratio:
+          type: string
+          description: Output aspect ratio.
+          enum:
+          - '16:9'
+          - '9:16'
+          - '3:4'
+          - '4:3'
+          - '1:1'
+        seed:
+          type: integer
+          description: Random seed for reproducibility.
+        movement_amplitude:
+          type: string
+          enum:
+          - auto
+          - small
+          - medium
+          - large
+        bgm:
+          type: boolean
+          description: Add background music.
+        off_peak:
+          type: boolean
+          description: Process in a lower-cost off-peak window (up to 48h).
+        callback_url:
+          type: string
+          format: uri
+          description: Optional URL notified when the task changes state.
+    Text2VideoRequest:
+      allOf:
+      - $ref: '#/components/schemas/CommonGenerationParams'
+      - type: object
+        required:
+        - model
+        - prompt
+        properties:
+          style:
+            type: string
+            enum:
+            - general
+            - anime
+          audio:
+            type: boolean
+            description: Generate synchronized audio (q3 models only).
+    Img2VideoRequest:
+      allOf:
+      - $ref: '#/components/schemas/CommonGenerationParams'
+      - type: object
+        required:
+        - model
+        - images
+        properties:
+          images:
+            type: array
+            description: Exactly one input image (URL or Base64 data URI). PNG/JPEG/JPG/WebP, max 50MB.
+            items:
+              type: string
+            minItems: 1
+            maxItems: 1
+          audio:
+            type: boolean
+    Reference2VideoRequest:
+      allOf:
+      - $ref: '#/components/schemas/CommonGenerationParams'
+      - type: object
+        required:
+        - model
+        - images
+        - prompt
+        properties:
+          images:
+            type: array
+            description: One to seven reference images (URL or Base64) whose subjects stay consistent.
+            items:
+              type: string
+            minItems: 1
+            maxItems: 7
+    StartEnd2VideoRequest:
+      allOf:
+      - $ref: '#/components/schemas/CommonGenerationParams'
+      - type: object
+        required:
+        - model
+        - images
+        properties:
+          images:
+            type: array
+            description: Two images - the start frame and the end frame, in order.
+            items:
+              type: string
+            minItems: 2
+            maxItems: 2
+    UpscaleRequest:
+      type: object
+      description: Modeled from public Upscale Pro docs; reconcile on integration.
+      required:
+      - model
+      properties:
+        model:
+          type: string
+          description: Upscale model identifier.
+        creation_id:
+          type: string
+          description: The id of a prior creation to upscale.
+        video_url:
+          type: string
+          format: uri
+          description: Alternatively, a source video URL to upscale.
+        resolution:
+          type: string
+          enum:
+          - 720p
+          - 1080p
+        callback_url:
+          type: string
+          format: uri
+    TaskCreated:
+      type: object
+      properties:
+        task_id:
+          type: string
+        state:
+          type: string
+          example: created
+        model:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        credits:
+          type: integer
+          description: Credits reserved or consumed for the task.
+    TaskStatus:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The task_id.
+        state:
+          type: string
+          enum:
+          - created
+          - queueing
+          - processing
+          - success
+          - failed
+        err_code:
+          type: string
+          nullable: true
+        credits:
+          type: integer
+        creations:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              url:
+                type: string
+                format: uri
+                description: URL of the finished video.
+              cover_url:
+                type: string
+                format: uri
+                description: URL of the poster/cover image.
