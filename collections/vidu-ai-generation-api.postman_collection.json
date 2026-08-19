@@ -1,0 +1,544 @@
+{
+  "item": [
+    {
+      "id": "b442f77f-5e51-4f2e-9477-e7cf0d4c29cb",
+      "name": "Generation",
+      "description": {
+        "content": "Create asynchronous video-generation tasks.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "29d899f4-a147-4049-8642-4dfbba79ef9f",
+          "name": "Create a text-to-video generation task.",
+          "request": {
+            "name": "Create a text-to-video generation task.",
+            "description": {
+              "content": "Generate a video from a text prompt. Returns an asynchronous task that must be polled at /tasks/{id}/creations for the finished video.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "text2video"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"<string>\",\n  \"prompt\": \"<string>\",\n  \"duration\": \"<integer>\",\n  \"resolution\": \"<string>\",\n  \"aspect_ratio\": \"<string>\",\n  \"seed\": \"<integer>\",\n  \"movement_amplitude\": \"<string>\",\n  \"bgm\": \"<boolean>\",\n  \"off_peak\": \"<boolean>\",\n  \"callback_url\": \"<uri>\",\n  \"style\": \"<string>\",\n  \"audio\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2863c9d6-7e21-431f-92e2-d75a484e2c37",
+              "name": "Task created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "text2video"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"viduq3-turbo\",\n  \"prompt\": \"<string>\",\n  \"duration\": 5,\n  \"resolution\": \"<string>\",\n  \"aspect_ratio\": \"<string>\",\n  \"seed\": \"<integer>\",\n  \"movement_amplitude\": \"<string>\",\n  \"bgm\": \"<boolean>\",\n  \"off_peak\": \"<boolean>\",\n  \"callback_url\": \"<uri>\",\n  \"style\": \"<string>\",\n  \"audio\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"task_id\": \"string\",\n  \"state\": \"created\",\n  \"model\": \"string\",\n  \"created_at\": \"2021-05-17T23:51:58.870Z\",\n  \"credits\": 3141\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9f61f2f5-607a-4ba5-b7f0-922e2676edf4",
+          "name": "Create an image-to-video generation task.",
+          "request": {
+            "name": "Create an image-to-video generation task.",
+            "description": {
+              "content": "Animate a single still image into a video clip. Returns an asynchronous task to poll for the finished video.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "img2video"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"<string>\",\n  \"images\": [\n    \"<string>\"\n  ],\n  \"prompt\": \"<string>\",\n  \"duration\": \"<integer>\",\n  \"resolution\": \"<string>\",\n  \"aspect_ratio\": \"<string>\",\n  \"seed\": \"<integer>\",\n  \"movement_amplitude\": \"<string>\",\n  \"bgm\": \"<boolean>\",\n  \"off_peak\": \"<boolean>\",\n  \"callback_url\": \"<uri>\",\n  \"audio\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "dff0112a-c300-420d-8964-5b00f5a7eb31",
+              "name": "Task created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "img2video"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"viduq3-turbo\",\n  \"images\": [\n    \"<string>\"\n  ],\n  \"prompt\": \"<string>\",\n  \"duration\": 5,\n  \"resolution\": \"<string>\",\n  \"aspect_ratio\": \"<string>\",\n  \"seed\": \"<integer>\",\n  \"movement_amplitude\": \"<string>\",\n  \"bgm\": \"<boolean>\",\n  \"off_peak\": \"<boolean>\",\n  \"callback_url\": \"<uri>\",\n  \"audio\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"task_id\": \"string\",\n  \"state\": \"created\",\n  \"model\": \"string\",\n  \"created_at\": \"2021-05-17T23:51:58.870Z\",\n  \"credits\": 3141\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "81bc83c6-2466-40b8-9a1d-23915116f923",
+          "name": "Create a reference-to-video generation task.",
+          "request": {
+            "name": "Create a reference-to-video generation task.",
+            "description": {
+              "content": "Generate video that keeps one to seven supplied reference subjects visually consistent across the clip (multi-entity consistency). Returns an asynchronous task to poll.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "reference2video"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"<string>\",\n  \"images\": [\n    \"<string>\"\n  ],\n  \"prompt\": \"<string>\",\n  \"duration\": \"<integer>\",\n  \"resolution\": \"<string>\",\n  \"aspect_ratio\": \"<string>\",\n  \"seed\": \"<integer>\",\n  \"movement_amplitude\": \"<string>\",\n  \"bgm\": \"<boolean>\",\n  \"off_peak\": \"<boolean>\",\n  \"callback_url\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d9448080-8ddd-44a1-9f8f-2bb347f2236f",
+              "name": "Task created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reference2video"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"viduq3-turbo\",\n  \"images\": [\n    \"<string>\"\n  ],\n  \"prompt\": \"<string>\",\n  \"duration\": 5,\n  \"resolution\": \"<string>\",\n  \"aspect_ratio\": \"<string>\",\n  \"seed\": \"<integer>\",\n  \"movement_amplitude\": \"<string>\",\n  \"bgm\": \"<boolean>\",\n  \"off_peak\": \"<boolean>\",\n  \"callback_url\": \"<uri>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"task_id\": \"string\",\n  \"state\": \"created\",\n  \"model\": \"string\",\n  \"created_at\": \"2021-05-17T23:51:58.870Z\",\n  \"credits\": 3141\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6b6b38b0-3c49-4451-9369-6df9e0d7fdd6",
+          "name": "Create a start-and-end frame generation task.",
+          "request": {
+            "name": "Create a start-and-end frame generation task.",
+            "description": {
+              "content": "Generate a video that interpolates motion between a supplied first frame and last frame. Returns an asynchronous task to poll.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "start-end2video"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"<string>\",\n  \"images\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"prompt\": \"<string>\",\n  \"duration\": \"<integer>\",\n  \"resolution\": \"<string>\",\n  \"aspect_ratio\": \"<string>\",\n  \"seed\": \"<integer>\",\n  \"movement_amplitude\": \"<string>\",\n  \"bgm\": \"<boolean>\",\n  \"off_peak\": \"<boolean>\",\n  \"callback_url\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "9254fc83-7077-4427-b826-e1cf481a0164",
+              "name": "Task created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "start-end2video"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"viduq3-turbo\",\n  \"images\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"prompt\": \"<string>\",\n  \"duration\": 5,\n  \"resolution\": \"<string>\",\n  \"aspect_ratio\": \"<string>\",\n  \"seed\": \"<integer>\",\n  \"movement_amplitude\": \"<string>\",\n  \"bgm\": \"<boolean>\",\n  \"off_peak\": \"<boolean>\",\n  \"callback_url\": \"<uri>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"task_id\": \"string\",\n  \"state\": \"created\",\n  \"model\": \"string\",\n  \"created_at\": \"2021-05-17T23:51:58.870Z\",\n  \"credits\": 3141\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "02aee058-949c-49de-9154-b3572d8495f2",
+          "name": "Create a video upscale task (Upscale Pro).",
+          "request": {
+            "name": "Create a video upscale task (Upscale Pro).",
+            "description": {
+              "content": "Upscale a previously generated Vidu video to a higher resolution. Returns an asynchronous task to poll. Request body is modeled from the public Upscale Pro docs and should be reconciled on integration.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "upscale"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"<string>\",\n  \"creation_id\": \"<string>\",\n  \"video_url\": \"<uri>\",\n  \"resolution\": \"<string>\",\n  \"callback_url\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5c8a59ec-48ae-4b0f-84dd-d4605441889a",
+              "name": "Task created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "upscale"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"<string>\",\n  \"creation_id\": \"<string>\",\n  \"video_url\": \"<uri>\",\n  \"resolution\": \"<string>\",\n  \"callback_url\": \"<uri>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"task_id\": \"string\",\n  \"state\": \"created\",\n  \"model\": \"string\",\n  \"created_at\": \"2021-05-17T23:51:58.870Z\",\n  \"credits\": 3141\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.vidu.com/ent/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "Authorization"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "466eacda-1f94-4969-af14-97dfee18677b",
+    "name": "Vidu Generation API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Generative video AI API from Shengshu Technology. The Vidu API is a REST, create-then-poll service: each generation operation (text-to-video, image-to-video, reference-to-video, start-and-end frame, upscale) submits an asynchronous task and returns a task_id in a \"created\" state, which the caller then polls via GET /ent/v2/tasks/{id}/creations (or receives on a callback_url) for the finished video URL. Endpoint paths and the token authentication scheme are grounded in the public Vidu platform docs (platform.vidu.com / docs.platform.vidu.com). Request and response schemas below are modeled from those docs and should be reconciled against the live reference before production use.\n\nContact Support:\n Name: Vidu Platform",
+      "type": "text/plain"
+    }
+  }
+}

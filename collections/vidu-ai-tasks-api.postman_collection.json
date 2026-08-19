@@ -1,0 +1,147 @@
+{
+  "item": [
+    {
+      "id": "021327e8-c801-47bb-9990-709a1aa2cae7",
+      "name": "Tasks",
+      "description": {
+        "content": "Poll, list, and cancel generation tasks.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0d665047-bb4a-43ce-806a-5beff45294e8",
+          "name": "Get the status and results of a generation task.",
+          "request": {
+            "name": "Get the status and results of a generation task.",
+            "description": {
+              "content": "Poll the status of an asynchronous generation task. When state is \"success\", the creations array carries the finished video URL(s) and cover image(s).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "tasks",
+                ":id",
+                "creations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The task_id returned when the generation task was created."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8995ef9b-7de4-47fb-83c3-94d4428f4727",
+              "name": "Task status and any finished creations.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tasks",
+                    ":id",
+                    "creations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The task_id returned when the generation task was created."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"state\": \"success\",\n  \"err_code\": \"string\",\n  \"credits\": 1424,\n  \"creations\": [\n    {\n      \"id\": \"string\",\n      \"url\": \"http://jNHNmEwJjxSfROhuVJbrF.mmVt7Jq,5suhUgS,CJQ3tYTapIPjJi1slofvzShWXcy.EzY7F1OYRjhABcMAslV9xTnCX\",\n      \"cover_url\": \"http://KYYZUGknFlgpgfaMeNmJflmop.gkjbp\"\n    },\n    {\n      \"id\": \"string\",\n      \"url\": \"http://NiJjtxplfjFsiqDNi.kmtjfwX5tlbSKN4RUFnZEPc3odtawaRv\",\n      \"cover_url\": \"http://WLYl.wyjFHvCAIe6FXt8y9jLEaND6JGpGZhGmv9izGishZ9ShIAbzICFe\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.vidu.com/ent/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "Authorization"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "f42ad355-1fd4-4ae6-a975-5e6f25834f2f",
+    "name": "Vidu Generation Tasks API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Generative video AI API from Shengshu Technology. The Vidu API is a REST, create-then-poll service: each generation operation (text-to-video, image-to-video, reference-to-video, start-and-end frame, upscale) submits an asynchronous task and returns a task_id in a \"created\" state, which the caller then polls via GET /ent/v2/tasks/{id}/creations (or receives on a callback_url) for the finished video URL. Endpoint paths and the token authentication scheme are grounded in the public Vidu platform docs (platform.vidu.com / docs.platform.vidu.com). Request and response schemas below are modeled from those docs and should be reconciled against the live reference before production use.\n\nContact Support:\n Name: Vidu Platform",
+      "type": "text/plain"
+    }
+  }
+}

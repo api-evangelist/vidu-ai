@@ -1,0 +1,45 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Vidu Generation Tasks API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tasks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the status and results of a generation task.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.vidu.com/ent/v2/tasks/:id/creations",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The task_id returned when the generation task was created."
+              }
+            ]
+          },
+          "docs": "Poll the status of an asynchronous generation task. When state is \"success\", the creations array carries the finished video URL(s) and cover image(s)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

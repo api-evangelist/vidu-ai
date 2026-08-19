@@ -1,0 +1,101 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Vidu Generation API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Generation",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a text-to-video generation task.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.vidu.com/ent/v2/text2video",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate a video from a text prompt. Returns an asynchronous task that must be polled at /tasks/{id}/creations for the finished video."
+        },
+        {
+          "info": {
+            "name": "Create an image-to-video generation task.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.vidu.com/ent/v2/img2video",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Animate a single still image into a video clip. Returns an asynchronous task to poll for the finished video."
+        },
+        {
+          "info": {
+            "name": "Create a reference-to-video generation task.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.vidu.com/ent/v2/reference2video",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate video that keeps one to seven supplied reference subjects visually consistent across the clip (multi-entity consistency). Returns an asynchronous task to poll."
+        },
+        {
+          "info": {
+            "name": "Create a start-and-end frame generation task.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.vidu.com/ent/v2/start-end2video",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate a video that interpolates motion between a supplied first frame and last frame. Returns an asynchronous task to poll."
+        },
+        {
+          "info": {
+            "name": "Create a video upscale task (Upscale Pro).",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.vidu.com/ent/v2/upscale",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Upscale a previously generated Vidu video to a higher resolution. Returns an asynchronous task to poll. Request body is modeled from the public Upscale Pro docs and should be reconciled on integration."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
