@@ -76,6 +76,8 @@ apis:
   humanURL: https://platform.vidu.com/docs/text-to-video
   baseURL: https://api.vidu.com/ent/v2
   tags:
+  - Task
+  tags_raw:
   - Tasks
   properties:
   - type: OpenAPI
