@@ -13,6 +13,18 @@ description: >-
   status endpoint (or receive a callback) for the finished video URL. Access is
   open to individual developers and businesses on a prepaid, credit-based model
   with no application required.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: paid
   onboarding: self-serve
