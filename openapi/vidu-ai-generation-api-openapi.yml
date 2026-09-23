@@ -1,7 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   title: Vidu Generation API
-  description: 'Generative video AI API from Shengshu Technology. The Vidu API is a REST, create-then-poll service: each generation operation (text-to-video, image-to-video, reference-to-video, start-and-end frame, upscale) submits an asynchronous task and returns a task_id in a "created" state, which the caller then polls via GET /ent/v2/tasks/{id}/creations (or receives on a callback_url) for the finished video URL. Endpoint paths and the token authentication scheme are grounded in the public Vidu platform docs (platform.vidu.com / docs.platform.vidu.com). Request and response schemas below are modeled from those docs and should be reconciled against the live reference before production use.'
+  description: Generative video AI API from Shengshu Technology.
   version: '2.0'
   contact:
     name: Vidu Platform
@@ -22,7 +22,7 @@ paths:
       operationId: createText2Video
       tags:
       - Generation
-      summary: Create a text-to-video generation task.
+      summary: Create a text-to-video generation task
       description: Generate a video from a text prompt. Returns an asynchronous task that must be polled at /tasks/{id}/creations for the finished video.
       requestBody:
         required: true
@@ -42,7 +42,7 @@ paths:
       operationId: createImg2Video
       tags:
       - Generation
-      summary: Create an image-to-video generation task.
+      summary: Create an image-to-video generation task
       description: Animate a single still image into a video clip. Returns an asynchronous task to poll for the finished video.
       requestBody:
         required: true
@@ -62,7 +62,7 @@ paths:
       operationId: createReference2Video
       tags:
       - Generation
-      summary: Create a reference-to-video generation task.
+      summary: Create a reference-to-video generation task
       description: Generate video that keeps one to seven supplied reference subjects visually consistent across the clip (multi-entity consistency). Returns an asynchronous task to poll.
       requestBody:
         required: true
@@ -82,7 +82,7 @@ paths:
       operationId: createStartEnd2Video
       tags:
       - Generation
-      summary: Create a start-and-end frame generation task.
+      summary: Create a start-and-end frame generation task
       description: Generate a video that interpolates motion between a supplied first frame and last frame. Returns an asynchronous task to poll.
       requestBody:
         required: true
@@ -102,7 +102,7 @@ paths:
       operationId: createUpscale
       tags:
       - Generation
-      summary: Create a video upscale task (Upscale Pro).
+      summary: Create a video upscale task (Upscale Pro)
       description: Upscale a previously generated Vidu video to a higher resolution. Returns an asynchronous task to poll. Request body is modeled from the public Upscale Pro docs and should be reconciled on integration.
       requestBody:
         required: true
@@ -135,22 +135,46 @@ components:
               type: string
             minItems: 1
             maxItems: 7
-    TaskCreated:
+    UpscaleRequest:
       type: object
+      description: Modeled from public Upscale Pro docs; reconcile on integration.
+      required:
+      - model
       properties:
-        task_id:
-          type: string
-        state:
-          type: string
-          example: created
         model:
           type: string
-        created_at:
+          description: Upscale model identifier.
+        creation_id:
           type: string
-          format: date-time
-        credits:
-          type: integer
-          description: Credits reserved or consumed for the task.
+          description: The id of a prior creation to upscale.
+        video_url:
+          type: string
+          format: uri
+          description: Alternatively, a source video URL to upscale.
+        resolution:
+          type: string
+          enum:
+          - 720p
+          - 1080p
+        callback_url:
+          type: string
+          format: uri
+    Text2VideoRequest:
+      allOf:
+      - $ref: '#/components/schemas/CommonGenerationParams'
+      - type: object
+        required:
+        - model
+        - prompt
+        properties:
+          style:
+            type: string
+            enum:
+            - general
+            - anime
+          audio:
+            type: boolean
+            description: Generate synchronized audio (q3 models only).
     CommonGenerationParams:
       type: object
       properties:
@@ -219,46 +243,6 @@ components:
             maxItems: 1
           audio:
             type: boolean
-    UpscaleRequest:
-      type: object
-      description: Modeled from public Upscale Pro docs; reconcile on integration.
-      required:
-      - model
-      properties:
-        model:
-          type: string
-          description: Upscale model identifier.
-        creation_id:
-          type: string
-          description: The id of a prior creation to upscale.
-        video_url:
-          type: string
-          format: uri
-          description: Alternatively, a source video URL to upscale.
-        resolution:
-          type: string
-          enum:
-          - 720p
-          - 1080p
-        callback_url:
-          type: string
-          format: uri
-    Text2VideoRequest:
-      allOf:
-      - $ref: '#/components/schemas/CommonGenerationParams'
-      - type: object
-        required:
-        - model
-        - prompt
-        properties:
-          style:
-            type: string
-            enum:
-            - general
-            - anime
-          audio:
-            type: boolean
-            description: Generate synchronized audio (q3 models only).
     StartEnd2VideoRequest:
       allOf:
       - $ref: '#/components/schemas/CommonGenerationParams'
@@ -274,6 +258,22 @@ components:
               type: string
             minItems: 2
             maxItems: 2
+    TaskCreated:
+      type: object
+      properties:
+        task_id:
+          type: string
+        state:
+          type: string
+          example: created
+        model:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        credits:
+          type: integer
+          description: Credits reserved or consumed for the task.
   securitySchemes:
     viduToken:
       type: apiKey
