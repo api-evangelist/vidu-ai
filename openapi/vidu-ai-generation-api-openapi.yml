@@ -119,23 +119,6 @@ paths:
                 $ref: '#/components/schemas/TaskCreated'
 components:
   schemas:
-    Img2VideoRequest:
-      allOf:
-      - $ref: '#/components/schemas/CommonGenerationParams'
-      - type: object
-        required:
-        - model
-        - images
-        properties:
-          images:
-            type: array
-            description: Exactly one input image (URL or Base64 data URI). PNG/JPEG/JPG/WebP, max 50MB.
-            items:
-              type: string
-            minItems: 1
-            maxItems: 1
-          audio:
-            type: boolean
     CommonGenerationParams:
       type: object
       properties:
@@ -187,23 +170,7 @@ components:
           type: string
           format: uri
           description: Optional URL notified when the task changes state.
-    Text2VideoRequest:
-      allOf:
-      - $ref: '#/components/schemas/CommonGenerationParams'
-      - type: object
-        required:
-        - model
-        - prompt
-        properties:
-          style:
-            type: string
-            enum:
-            - general
-            - anime
-          audio:
-            type: boolean
-            description: Generate synchronized audio (q3 models only).
-    StartEnd2VideoRequest:
+    Img2VideoRequest:
       allOf:
       - $ref: '#/components/schemas/CommonGenerationParams'
       - type: object
@@ -213,27 +180,13 @@ components:
         properties:
           images:
             type: array
-            description: Two images - the start frame and the end frame, in order.
+            description: Exactly one input image (URL or Base64 data URI). PNG/JPEG/JPG/WebP, max 50MB.
             items:
               type: string
-            minItems: 2
-            maxItems: 2
-    TaskCreated:
-      type: object
-      properties:
-        task_id:
-          type: string
-        state:
-          type: string
-          example: created
-        model:
-          type: string
-        created_at:
-          type: string
-          format: date-time
-        credits:
-          type: integer
-          description: Credits reserved or consumed for the task.
+            minItems: 1
+            maxItems: 1
+          audio:
+            type: boolean
     UpscaleRequest:
       type: object
       description: Modeled from public Upscale Pro docs; reconcile on integration.
@@ -258,6 +211,53 @@ components:
         callback_url:
           type: string
           format: uri
+    Text2VideoRequest:
+      allOf:
+      - $ref: '#/components/schemas/CommonGenerationParams'
+      - type: object
+        required:
+        - model
+        - prompt
+        properties:
+          style:
+            type: string
+            enum:
+            - general
+            - anime
+          audio:
+            type: boolean
+            description: Generate synchronized audio (q3 models only).
+    TaskCreated:
+      type: object
+      properties:
+        task_id:
+          type: string
+        state:
+          type: string
+          example: created
+        model:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        credits:
+          type: integer
+          description: Credits reserved or consumed for the task.
+    StartEnd2VideoRequest:
+      allOf:
+      - $ref: '#/components/schemas/CommonGenerationParams'
+      - type: object
+        required:
+        - model
+        - images
+        properties:
+          images:
+            type: array
+            description: Two images - the start frame and the end frame, in order.
+            items:
+              type: string
+            minItems: 2
+            maxItems: 2
     Reference2VideoRequest:
       allOf:
       - $ref: '#/components/schemas/CommonGenerationParams'
