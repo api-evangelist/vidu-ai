@@ -1,4 +1,4 @@
-# Vidu (vidu-ai)
+# Vidu
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,100 +64,119 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Vidu is a generative video AI platform from **Shengshu Technology** (ShengShu / 生数科技), built on the company's U-ViT diffusion-transformer architecture. The Vidu API turns text prompts, still images, and reference subjects into short video clips - text-to-video, image-to-video, reference-to-video (multi-entity / character consistency), start-and-end frame interpolation, and video upscaling.
+Vidu is a generative video AI platform from Shengshu Technology (ShengShu / 生数科技), built on the company's U-ViT diffusion-transformer architecture. The Vidu API turns text prompts, still images, and reference subjects into short video clips with features like text-to-video, image-to-video, reference-to-video (multi-entity / character consistency), start-and-end frame interpolation, and video upscaling. The API is a REST create-then-poll service - callers submit an asynchronous generation task, then poll the task status endpoint (or receive a callback) for the finished video URL. Access is open to individual developers and businesses on a prepaid, credit-based model with no application required.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/vidu-ai/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/vidu-ai/refs/heads/main/apis.yml)
+**Areas:** Video Generation · AI Video · Generative AI · Image-to-Video · Reference-to-Video · U-ViT · Diffusion
 
-## Access Model (be honest about it)
+## Vidu on APIs.io
 
-- **Open access, no application required.** Individual developers and businesses can buy prepaid credits and start calling the API immediately - no high-tier subscription gate.
-- **Prepaid, credit-based pricing.** Launch base price ~USD $0.05/credit with a minimum purchase around $10. A four-second clip runs roughly 4-40 credits depending on the feature, model tier, resolution, and aspect ratio. Off-peak mode trades a longer queue window for lower credit cost.
-- **Asynchronous create-then-poll.** Every generation endpoint is a `POST` that returns a `task_id` in a `created` state. You then poll `GET /ent/v2/tasks/{id}/creations` for `state = success` (or supply a `callback_url` that Vidu calls on completion). There is **no public WebSocket** - see `review.yml`.
-- **Auth.** API key in the `Authorization` header using the token scheme: `Authorization: Token vda_xxx` (not standard HTTP Bearer).
-- **Grounding & honesty.** Endpoint paths, HTTP methods, the base URL (`https://api.vidu.com/ent/v2`), model names, auth scheme, and the async pattern are grounded in the public Vidu platform docs. The OpenAPI models request/response **field schemas** from documentation prose (flagged `x-modeled`); the **Upscale** request body in particular is modeled and should be reconciled against the live reference before production use.
+Everything profiled for Vidu is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/vidu-ai/](https://apis.io/providers/vidu-ai/)** — or go straight to one of the APIs or properties below.
 
-## Base URL
+### APIs (2)
 
-`https://api.vidu.com/ent/v2`
+- [Vidu Generation API](https://apis.io/apis/vidu-ai/vidu-ai-generation-api/) — Create asynchronous video-generation tasks.
+- [Vidu Tasks API](https://apis.io/apis/vidu-ai/vidu-ai-tasks-api/) — Poll, list, and cancel generation tasks.
 
-## APIs
+### Published properties
 
-### Vidu Text-to-Video API
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-Generate a video from a text prompt alone. `POST /ent/v2/text2video` with a model (viduq3-turbo, viduq3-pro, viduq2, viduq1), prompt, duration, resolution, and aspect ratio.
+#### Agentic access (1)
 
-- **Documentation:** [https://platform.vidu.com/docs/text-to-video](https://platform.vidu.com/docs/text-to-video)
-- **Base URL:** `https://api.vidu.com/ent/v2`
-- **Tags:** Text-to-Video, Video Generation, Generative AI
+Which operations an agent can call, which act, and which need a human in the loop.
 
-### Vidu Image-to-Video API
+- [Vidu Ai Agentic Access](https://apis.io/agentic-access/vidu-ai/vidu-ai-agentic-access/)
 
-Animate a single still image into a video clip. `POST /ent/v2/img2video` with a model, one input image (URL or Base64; PNG/JPEG/JPG/WebP up to 50MB), optional prompt, duration, and resolution.
+#### Collections (3)
 
-- **Documentation:** [https://platform.vidu.com/docs/image-to-video](https://platform.vidu.com/docs/image-to-video)
-- **Base URL:** `https://api.vidu.com/ent/v2`
-- **Tags:** Image-to-Video, Video Generation, Animation
+Postman and Open Collection request collections.
 
-### Vidu Reference-to-Video API
+- [Vidu API](https://apis.io/collections/vidu-ai/open-vidu-ai/)
+- [Vidu Generation API](https://apis.io/collections/vidu-ai/open-vidu-ai-generation-api/)
+- [Vidu Generation Tasks API](https://apis.io/collections/vidu-ai/open-vidu-ai-tasks-api/)
 
-Keep one to seven supplied subjects visually consistent across the clip (Vidu's multi-entity consistency). `POST /ent/v2/reference2video` with reference images plus a prompt.
+#### Security (1)
 
-- **Documentation:** [https://platform.vidu.com/docs/reference-to-video](https://platform.vidu.com/docs/reference-to-video)
-- **Base URL:** `https://api.vidu.com/ent/v2`
-- **Tags:** Reference-to-Video, Character Consistency, Multi-Entity
+Authentication, trust centre, and vulnerability disclosure.
 
-### Vidu Start-End Frame API
+- [Vidu Ai Authentication](https://apis.io/security/vidu-ai/vidu-ai-authentication/)
 
-Generate a video that transitions between a supplied first frame and last frame. `POST /ent/v2/start-end2video` with two images and an optional prompt.
+#### Plans and pricing (1)
 
-- **Documentation:** [https://platform.vidu.com/docs/start-end-to-video](https://platform.vidu.com/docs/start-end-to-video)
-- **Base URL:** `https://api.vidu.com/ent/v2`
-- **Tags:** Start-End Frame, Interpolation, Video Generation
+Published plans, tiers and prices.
 
-### Vidu Upscale API
+- [Vidu Ai Plans Pricing](https://apis.io/plans/vidu-ai/vidu-ai-plans-pricing/)
 
-Upscale a previously generated Vidu video to a higher resolution (Upscale Pro). `POST /ent/v2/upscale`. Request/response bodies here are modeled from public docs and should be reconciled on integration.
+#### Rate limits (1)
 
-- **Documentation:** [https://docs.platform.vidu.com/7207545m0](https://docs.platform.vidu.com/7207545m0)
-- **Base URL:** `https://api.vidu.com/ent/v2`
-- **Tags:** Upscale, Super Resolution, Video Enhancement
+Published request limits.
 
-### Vidu Task Query API
+- [Vidu Ai Rate Limits](https://apis.io/rate-limits/vidu-ai/vidu-ai-rate-limits/)
 
-Retrieve the status and results of an asynchronous task. `GET /ent/v2/tasks/{id}/creations` returns the task id, state (created / queueing / processing / success / failed), credits used, and a creations array of finished video URLs and cover images.
+#### FinOps (1)
 
-- **Documentation:** [https://docs.platform.vidu.com/7207545m0](https://docs.platform.vidu.com/7207545m0)
-- **Base URL:** `https://api.vidu.com/ent/v2`
-- **Tags:** Task Status, Polling, Async
+What the API costs to run, by operation.
 
-## Tags
+- [Vidu Ai Finops](https://apis.io/finops/vidu-ai/vidu-ai-finops/)
 
-- Video Generation
-- AI Video
-- Generative AI
-- Text-to-Video
-- Image-to-Video
-- Reference-to-Video
-- U-ViT
-- Diffusion
+## Where to find this API
 
-## Common Properties
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-- [Authentication](authentication/vidu-ai-authentication.yml)
-- [GitHub Organization](https://github.com/shengshu-ai)
-- [LinkedIn](https://www.linkedin.com/company/shengshu-technology)
 - [Website](https://www.vidu.com)
 - [Documentation](https://platform.vidu.com/docs)
-- [Plans](plans/vidu-ai-plans-pricing.yml)
-- [Rate Limits](rate-limits/vidu-ai-rate-limits.yml)
-- [Fin Ops](finops/vidu-ai-finops.yml)
+- [Blog](https://www.vidu.com/blog)
+- [GitHub](https://github.com/shengshu-ai)
 
-## Timestamps
+## API Evangelist rating
 
-- **Created:** 2026-07-11
-- **Modified:** 2026-07-11
+**Kin Score 17.0** — emerging · rubric 0.24.0 · scored 2026-10-17
 
-## Maintainers
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 23.1 |
+| Contract governance | 0.0 |
+| Operational transparency | 10.5 |
+| Developer ergonomics | 23.8 |
+| Access clarity | 5.3 |
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Agent readiness 17.9** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 5.5** — AI & Biometrics
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/vidu-ai/](https://apis.io/providers/vidu-ai/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Vidu: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/vidu-ai/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
